@@ -204,10 +204,11 @@ class HuaweicloudDriver (ResourceDriverInterface):
         self.logger.info('started delete')
         cloud = self._connect_to_cloud(context)
         self.logger.info('got session to cloud')
-        server_to_delete = cloud.conn.compute.find_server(context.resource.name)
-        self.logger.info('deleting server {}'.format(context.resource.name))
+        resource_name_to_delete = context.remote_endpoints[0].name
+        server_to_delete = cloud.conn.compute.find_server(resource_name_to_delete)
+        self.logger.info('deleting server {}'.format(resource_name_to_delete))
         cloud.delete_vm(server_to_delete)
-        self.logger.info('server {} deleted'.format(context.resource.name))
+        self.logger.info('server {} deleted'.format(resource_name_to_delete))
 
     def GetVmDetails(self, context, requests, cancellation_context):
         """
