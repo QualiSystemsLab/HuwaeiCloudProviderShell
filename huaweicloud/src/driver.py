@@ -9,6 +9,8 @@ import cloudHandler
 from cloudshell.cp.core.utils import single
 from cloudshell.core.logger import qs_logger
 from data_model import *  # run 'shellfoundry generate' to generate data model classes
+from openstack.compute.v2.server import Server
+
 
 import json
 import uuid
@@ -143,14 +145,18 @@ class HuaweicloudDriver (ResourceDriverInterface):
         deployment_name = deploy_action.actionParams.deployment.deploymentPath
 
         raw_result = self.deploy_hwc_from_image(context, deploy_action, cancellation_context, cloud)
+        #delete me
+        if(isinstance(raw_result,Server)):
+            pass
         deploy_result = DeployAppResult(
             vmName=raw_result.name,
             actionId=deploy_action.actionId,
             vmUuid='',
             success=True,
-            deployedAppAddress='1',
+            deployedAppAddress=raw_result.addresses.get(raw_result.addresses.keys()[0])[0].get('addr'),
             deployedAppAttributes=[],
-            vmDetailsData=VmDetailsCreator.extract_vm_details(raw_result)
+            vmDetailsData=None
+            # VmDetailsCreator.extract_vm_details(raw_result)
         )
 
         # handle if Elastic IP is needed
@@ -158,7 +164,7 @@ class HuaweicloudDriver (ResourceDriverInterface):
         #     new_ip = cloud.createEIP(cloud.get_vm_port_id(raw_result))
 
         my_response = DriverResponse([deploy_result]).to_driver_response_json()
-
+        self.logger.info('my response is : {0}'.format(my_response))
         return my_response
         # return DriverResponse('none')
 
@@ -195,7 +201,13 @@ class HuaweicloudDriver (ResourceDriverInterface):
         :param ResourceRemoteCommandContext context:
         :param ports:
         """
-        pass
+        self.logger.info('started delete')
+        cloud = self._connect_to_cloud(context)
+        self.logger.info('got session to cloud')
+        server_to_delete = cloud.conn.compute.find_server(context.resource.name)
+        self.logger.info('deleting server {}'.format(context.resource.name))
+        cloud.delete_vm(server_to_delete)
+        self.logger.info('server {} deleted'.format(context.resource.name))
 
     def GetVmDetails(self, context, requests, cancellation_context):
         """

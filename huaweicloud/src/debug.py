@@ -9,7 +9,8 @@ from cloudshell.shell.core.resource_driver_interface import ResourceDriverInterf
 
 # Debug Script
 
-
+# with open(r'c:\temp\HWC_Debug_creds', 'r') as debug_file:
+#     my_debug_file = debug_file.read()
 
 dev_help.attach_to_cloudshell_as(
     user='admin',
