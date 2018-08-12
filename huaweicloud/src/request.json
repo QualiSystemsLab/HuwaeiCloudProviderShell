@@ -1,0 +1,59 @@
+                {"driverRequest": {
+                  "actions": [
+                    {
+                      "actionParams": {
+                        "appName": "my_HWC_app",
+                        "deployment": {
+                          "deploymentPath": "Huaweicloud.HWC_deploy_from_image",
+                          "attributes": [
+                            {
+                              "attributeName": "Huaweicloud.HWC_deploy_from_image.Autoload",
+                              "attributeValue": "True",
+                              "type": "attribute"
+                            },
+                            {
+                              "attributeName": "Huaweicloud.HWC_deploy_from_image.Wait for IP",
+                              "attributeValue": "True",
+                              "type": "attribute"
+                            },
+                            {
+                              "attributeName": "Huaweicloud.HWC_deploy_from_image.image",
+                              "attributeValue": "292a7f86-3f3e-44b0-8ed5-3f244a07a563",
+                              "type": "attribute"
+                            },
+                            {
+                              "attributeName": "Huaweicloud.HWC_deploy_from_image.EIP",
+                              "attributeValue": "False",
+                              "type": "attribute"
+                            }
+                          ],
+                          "type": "deployAppDeploymentInfo"
+                        },
+                        "appResource": {
+                          "attributes": [
+                            {
+                              "attributeName": "Password",
+                              "attributeValue": "3M3u7nkDzxWb0aJ/IZYeWw==",
+                              "type": "attribute"
+                            },
+                            {
+                              "attributeName": "Public IP",
+                              "attributeValue": "",
+                              "type": "attribute"
+                            },
+                            {
+                              "attributeName": "User",
+                              "attributeValue": "",
+                              "type": "attribute"
+                            }
+                          ],
+                          "type": "appResourceInfo"
+                        },
+                        "type": "deployAppParams"
+                      },
+                      "actionId": "9749aeb2-38e2-43e6-9623-c675c3a49407",
+                      "type": "deployApp"
+                    }
+                  ]
+                }
+              }

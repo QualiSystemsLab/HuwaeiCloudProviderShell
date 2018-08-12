@@ -1,0 +1,76 @@
+tosca_definitions_version: tosca_simple_yaml_1_0
+
+metadata:
+  template_name: Huaweicloud
+  template_author: Anonymous
+  template_version: 0.1.0
+  template_icon: shell-icon.png
+
+description: >
+ Sample TOSCA based shell
+
+imports:
+  - cloudshell_standard: cloudshell_cloud_provider_standard_1_0_0.yaml
+
+node_types:
+ vendor.resource.Huaweicloud:
+    derived_from: cloudshell.nodes.CustomCloudProvider
+    properties:
+      user:
+        type: string          # optional values: string, integer, float, boolean, cloudshell.datatypes.Password
+        default:
+        description: console username
+        tags: [setting , configuration]
+      password:
+        type: cloudshell.datatypes.Password          # optional values: string, integer, float, boolean, cloudshell.datatypes.Password
+        default:
+        description: console password
+        tags: [setting , configuration]
+      projectId:
+        type: string         # optional values: string, integer, float, boolean, cloudshell.datatypes.Password
+        default:
+        description: project ID
+        tags: [setting , configuration]
+      userDomainID:
+        type: string         # optional values: string, integer, float, boolean, cloudshell.datatypes.Password
+        default:
+        description: project ID
+        tags: [setting , configuration]
+    capabilities:
+      auto_discovery_capability:
+        type: cloudshell.capabilities.AutoDiscovery
+        properties:        
+          user:
+            description: User with administrative privileges
+            type: string
+          password:
+            description: Password of User with administrative privileges
+            type: cloudshell.datatypes.Password
+          projectId:
+            description: the tenant ID for the hauwei account. GUID
+            type: string
+          userDomainID:
+            description: the user account ID for this account. GUID
+            type: string
+          enable_auto_discovery:
+            type: boolean
+            default: true
+          auto_discovery_description:
+            type: string
+            default: Describe the auto discovery
+          inventory_description:
+            type: string
+            default: Describe the resource shell template
+    artifacts:
+      icon:
+        file: shell-icon.png
+        type: tosca.artifacts.File
+      driver:
+        file: HuaweicloudDriver.zip
+        type: tosca.artifacts.File
+      deployment:
+        file: Deployments.zip
+        type: tosca.artifacts.File
+
+
+     
