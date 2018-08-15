@@ -21,6 +21,10 @@ node_types:
         description: image GUID to deploy
         type: string
         tags: [user_input]
+      flavour:
+        description: HW type definitions (i.e. 's2.small.1')
+        type: string
+        tags: [user_input]
       EIP:
         description: do I deploy EIP
         type: boolean

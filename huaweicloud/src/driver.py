@@ -36,6 +36,7 @@ class HuaweicloudDriver (ResourceDriverInterface):
             log_file_prefix='HWC'
         )
 
+
     # <editor-fold desc="Discovery">
 
     def _get_api_session(self, context):
@@ -60,7 +61,6 @@ class HuaweicloudDriver (ResourceDriverInterface):
 
 
     def _connect_to_cloud(self, context):
-
         # resource = Huaweicloud.create_from_context(context)
         session = self._get_api_session(context)
         try:
@@ -87,7 +87,7 @@ class HuaweicloudDriver (ResourceDriverInterface):
         :return Attribute and sub-resource information for the Shell resource you can return an AutoLoadDetails object
         :rtype: AutoLoadDetails
         """
-
+        self.logger.info('inside get_inventory')
         # run 'shellfoundry generate' in order to create classes that represent your data model
 
         return AutoLoadDetails([], [])
@@ -97,6 +97,7 @@ class HuaweicloudDriver (ResourceDriverInterface):
     # <editor-fold desc="Mandatory Commands">
 
     def Deploy(self, context, request=None, cancellation_context=None):
+        self.logger.info('inside Deploy')
         """
         Deploy
         :param ResourceCommandContext context:
@@ -156,12 +157,12 @@ class HuaweicloudDriver (ResourceDriverInterface):
             deployedAppAddress=raw_result.addresses.get(raw_result.addresses.keys()[0])[0].get('addr'),
             deployedAppAttributes=[],
             vmDetailsData=None
-            # VmDetailsCreator.extract_vm_details(raw_result)
+            #vmDetailsData=VmDetailsCreator.extract_vm_details(raw_result)
         )
 
         # handle if Elastic IP is needed
-        # if deploy_action.actionParams.deployment.attributes.get('Huaweicloud.HWC_deploy_from_image.EIP') == 'True':
-        #     new_ip = cloud.createEIP(cloud.get_vm_port_id(raw_result))
+        if deploy_action.actionParams.deployment.attributes.get('Huaweicloud.HWC_deploy_from_image.EIP') == 'True':
+             new_ip = cloud.createEIP(cloud.get_vm_port_id(raw_result))
 
         my_response = DriverResponse([deploy_result]).to_driver_response_json()
         self.logger.info('my response is : {0}'.format(my_response))
@@ -169,11 +170,14 @@ class HuaweicloudDriver (ResourceDriverInterface):
         # return DriverResponse('none')
 
     def deploy_hwc_from_image(self, context, deploy_action, cancellation_context, cloud):
+        self.logger.info('inside deploy_hwc_from_image')
         my_uuid = str(uuid.uuid4())[:8]
         my_app_name = '{0}_{1}'.format(deploy_action.actionParams.appName, my_uuid)
         self.logger.info(my_app_name)
         vm_obj = cloud.create_vm(name=my_app_name,
-                                 image=deploy_action.actionParams.deployment.attributes.get('Huaweicloud.HWC_deploy_from_image.image'))
+                                 image=deploy_action.actionParams.deployment.attributes.get('Huaweicloud.HWC_deploy_from_image.image'),
+                                 flavor=deploy_action.actionParams.deployment.attributes.get('Huaweicloud.HWC_deploy_from_image.flavour'))
+
         return vm_obj
 
     def PowerOn(self, context, ports):
@@ -182,6 +186,7 @@ class HuaweicloudDriver (ResourceDriverInterface):
         :param ResourceRemoteCommandContext context:
         :param ports:
         """
+        self.logger.info('inside POwerOn')
         pass
 
     def PowerOff(self, context, ports):
@@ -190,9 +195,11 @@ class HuaweicloudDriver (ResourceDriverInterface):
         :param ResourceRemoteCommandContext context:
         :param ports:
         """
+        self.logger.info('inside PowerOff')
         pass
 
     def PowerCycle(self, context, ports, delay):
+        self.logger.info('inside PowerCycle')
         pass
 
     def DeleteInstance(self, context, ports):
@@ -201,16 +208,19 @@ class HuaweicloudDriver (ResourceDriverInterface):
         :param ResourceRemoteCommandContext context:
         :param ports:
         """
+        self.logger.info('inside DeleteInstance')
+
         self.logger.info('started delete')
         cloud = self._connect_to_cloud(context)
         self.logger.info('got session to cloud')
         resource_name_to_delete = context.remote_endpoints[0].name
+        self.logger.info('server to delete {}'.format(resource_name_to_delete))
         server_to_delete = cloud.conn.compute.find_server(resource_name_to_delete)
         self.logger.info('deleting server {}'.format(resource_name_to_delete))
         cloud.delete_vm(server_to_delete)
         self.logger.info('server {} deleted'.format(resource_name_to_delete))
 
-    def GetVmDetails(self, context, requests, cancellation_context):
+    #def GetVmDetails(self, context, requests, cancellation_context):
         """
 
         :param ResourceCommandContext context:
@@ -218,7 +228,7 @@ class HuaweicloudDriver (ResourceDriverInterface):
         :param CancellationContext cancellation_context:
         :return:
         """
-        pass
+     #   pass
 
     def remote_refresh_ip(self, context, ports, cancellation_context):
         """
@@ -228,7 +238,8 @@ class HuaweicloudDriver (ResourceDriverInterface):
         :param CancellationContext cancellation_context:
         :return:
         """
-        pass
+        self.logger.info('inside remote_refresh_ip')
+
 
     # </editor-fold>
 
@@ -246,13 +257,14 @@ class HuaweicloudDriver (ResourceDriverInterface):
         :return: a json object with the list of connectivity changes which were carried out by the driver
         :rtype: str
         """
+        self.logger.info('inside ApplyConnectivityChanges')
         pass
 
     # </editor-fold> 
 
     # <editor-fold desc="Mandatory Commands For L3 Connectivity Type">
 
-    def PrepareSandboxInfra(self, context, request, cancellation_context):
+    #def PrepareSandboxInfra(self, context, request, cancellation_context):
         """
 
         :param ResourceCommandContext context:
@@ -269,9 +281,9 @@ class HuaweicloudDriver (ResourceDriverInterface):
         
         return DriverResponse(action_results).to_driver_response_json()    
         '''
-        pass
+        #pass
 
-    def CleanupSandboxInfra(self, context, request):
+    #def CleanupSandboxInfra(self, context, request):
         """
 
         :param ResourceCommandContext context:
@@ -287,7 +299,7 @@ class HuaweicloudDriver (ResourceDriverInterface):
 
         return DriverResponse(action_results).to_driver_response_json()    
         '''
-        pass
+       # pass
 
     # </editor-fold>
 

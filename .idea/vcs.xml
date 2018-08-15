@@ -3,5 +3,6 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/HuwaeiCloudProviderShell" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../../Orchestration/cloudshell-orch-sandbox-ext" vcs="Git" />
   </component>
 </project>

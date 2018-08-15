@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/HuwaeiCloudProviderShell.iml" filepath="$PROJECT_DIR$/.idea/HuwaeiCloudProviderShell.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../Orchestration/cloudshell-orch-sandbox-ext/.idea/cloudshell-orch-sandbox-ext.iml" filepath="$PROJECT_DIR$/../../Orchestration/cloudshell-orch-sandbox-ext/.idea/cloudshell-orch-sandbox-ext.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../custom_vm_setup_no_default/.idea/custom_vm_setup_no_default.iml" filepath="$PROJECT_DIR$/../../custom_vm_setup_no_default/.idea/custom_vm_setup_no_default.iml" />
     </modules>
   </component>
 </project>

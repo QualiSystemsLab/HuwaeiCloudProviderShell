@@ -19,15 +19,20 @@ class huawei_cloud_provider():
         self.internal_net = [net for net in nets if not net.is_router_external][0]
         self.external_net = [net for net in nets if net.is_router_external][0]
 
-    def create_vm(self, name, image):
+    def create_vm(self, name, image, flavor):
+        image_obj = self.conn.compute.find_image(image,
+                                             ignore_missing=False)
         server = self.conn.compute.create_server(
             name=name,
-            flavor_id='s2.small.1',
-            image_id='{}'.format(image),
-            key_name='QualikeyPair',
+            flavor_id=flavor,
+            image_id=image_obj.id,
+           # key_name='QualikeyPair',
+            admin_password='Quali!23456',
             networks=[{"uuid": '{}'.format(self.internal_net.id)}]
         )
         self.conn.compute.wait_for_server(server)
+
+
         return server
 
     def get_all_flavors(self):
